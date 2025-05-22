@@ -1,0 +1,6 @@
+{
+    "articleTitle": "QA Metrics in Software Testing: Definitions, Types, Formulas & Examples",
+    "articleDescription": "This article aims to define the term quality assurance metrics (QA metrics) and explain why they are important in software testing. We will also explain the different types of QA metrics, discuss a few essential QA metrics, give real-world examples of QA metrics, and offer tips for choosing the right metrics for your team.",
+    "articleContent": "In order to measure, communicate about, or improve the quality of your product in a meaningful way, you need a way to verify whether your QA processes are working effectively. That’s why QA metrics are key. By tracking and measuring metrics, a QA team can understand where their testing strategy is succeeding and where it’s falling short, which is the first step toward improving their craft.",
+    "articleTags": ["QA", "Dojo"]
+}
