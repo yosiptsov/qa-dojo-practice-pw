@@ -13,7 +13,7 @@ const baseURL = 'https://demoqa.com/text-box';
 
 test.describe('training to build xpath to different elements ', () => {
   test.beforeEach(async ({ page, context }) => {
-    //blocking all ads requests
+    //it blocks all ads requests
     await context.route(/ads/, (route) => route.abort());
     await page.goto(baseURL);
   });
@@ -30,7 +30,7 @@ test.describe('training to build xpath to different elements ', () => {
     return message.trim();
   }
 
-  test("let's test interaction with checkboxes on different tree levels", async ({ page }) => {
+  test("DemoQa-1: let's test interaction with checkboxes on different tree levels", {tag: ['@demo-qa', '@HW4'] }, async ({ page }) => {
     // !SELECTORS
     // buttons and toggles
     // ? I was not able to find a better way to select this element, only with using 'first'. It is not strong selector, I guess. But what are the other options here?

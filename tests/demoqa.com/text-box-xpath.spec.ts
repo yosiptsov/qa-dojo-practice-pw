@@ -18,7 +18,7 @@ test.describe('training to build xpath to different elements ', () => {
     await page.goto(baseURL);
   });
 
-  test("let's test interaction with text boxes", async ({ page }) => {
+  test("DemoQA-3: let's test interaction with text boxes",{tag: ['@demo-qa', '@HW4'] }, async ({ page }) => {
     // !SELECTORS
     // inputs
     const fullNameInput = page.locator(`//input[@placeholder="Full Name"]`);
