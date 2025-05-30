@@ -17,8 +17,13 @@ const articleTags = (page: Page) => page.locator('[placeholder="Enter tags"]');
 const publishArticleButton = (page: Page) => page.locator('[data-qa-id="editor-publish"]');
 
 // xpath with a parameter inside
-const createdArticle = (page: Page, timestamp: string) => page.locator(`//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`);
+const createdArticle = (page: Page, timestamp: string) =>
+  page.locator(`//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`);
 
+const createdArticleByNumber = (page: Page, timestamp: string, elementNumber: number) =>
+  page.locator(`//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`).nth(elementNumber);
+
+// functions
 async function createUser(userName: string, password: string, userEmail: string, page: Page) {
   const registerPage = 'https://demo.learnwebdriverio.com/register';
   await page.goto(registerPage);
@@ -65,10 +70,20 @@ test.describe('Fields validations', () => {
       // created several articles according to the parameter neededNumberOfArticles
       await createNArticles(page, articleData, timestamp, neededNumberOfArticles);
       await page.goto(baseURL);
-      
-      //expected result
-      await expect(createdArticle(page, timestamp).first(), 'new added articles should be present in the list').toBeVisible();
-      await expect(createdArticle(page, timestamp), 'new added articles should be present in the list').toHaveCount(neededNumberOfArticles);
+
+      //expected results - version 1
+      await expect(
+        createdArticle(page, timestamp).first(),
+        'new added articles should be present in the list'
+      ).toBeVisible();
+      await expect(createdArticle(page, timestamp), 'new added articles should be present in the list').toHaveCount(
+        neededNumberOfArticles
+      );
+
+      //expected results - version 2
+      for (let i = 0; i < neededNumberOfArticles-1; i++) {
+        await expect(createdArticleByNumber(page, timestamp, i), `new added article ${i} of ${neededNumberOfArticles-1} should be visible`).toBeVisible();
+      }
     }
   );
 });
