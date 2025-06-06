@@ -20,6 +20,7 @@ const publishArticleButton = (page: Page) => page.locator('[data-qa-id="editor-p
 const createdArticle = (page: Page, timestamp: string) =>
   page.locator(`//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`);
 
+// second version of locator
 const createdArticleByNumber = (page: Page, timestamp: string, elementNumber: number) =>
   page.locator(`//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`).nth(elementNumber);
 
