@@ -11,6 +11,11 @@ export function arrayCloningMap(inputArray: Array<unknown>): Array<unknown>|stri
     return isArray(inputArray) ? inputArray.map(it => it) : 'input is not an array';
 }
 
+//HW-2 clone input array - spread
+export function arrayCloningSpread(inputArray: Array<unknown>): Array<unknown>|string {
+    return [...inputArray];
+}
+
 //HW-3 n elements of an input array
 export function firstElemsOfArray(inputArray: Array<unknown>, n: number = 1): Array<unknown>|string {
     return isArray(inputArray) ?  inputArray.slice(0, n) : 'input is not an array';    
