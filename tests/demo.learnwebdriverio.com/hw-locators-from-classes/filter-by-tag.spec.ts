@@ -11,7 +11,7 @@
 
 import { test, expect, Page } from '@playwright/test';
 import { SignUpPage } from './pages/SignUpPage.po';
-import { HomePage } from './pages/Home.po'
+import { HomePage } from './pages/HomePage.po'
 
 // baseURL overwrite the baseURL in playwright.config.ts
 const baseURL = 'https://demo.learnwebdriverio.com';
