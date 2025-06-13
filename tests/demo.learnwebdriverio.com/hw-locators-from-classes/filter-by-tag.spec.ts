@@ -11,7 +11,7 @@
 
 import { test, expect, Page } from '@playwright/test';
 import { SignUpPage } from './pages/SignUpPage.po';
-import { MainPage } from './pages/Main.po'
+import { HomePage } from './pages/Home.po'
 
 // baseURL overwrite the baseURL in playwright.config.ts
 const baseURL = 'https://demo.learnwebdriverio.com';
@@ -31,20 +31,19 @@ test.describe('filter by tag filters articles in feed properly', () => {
       const userName = `username${timestamp}`;
       const userEmail = `${userName}@gmail1.com`;
       const password = 'mypassword';
-
       const tagName = 'demo';
 
       const signUpPage = new SignUpPage(page, userName);
-      const mainPage = new MainPage(page, tagName);
+      const homePage = new HomePage(page, tagName);
   
       // register a new user
       await signUpPage.createUser(userName, password, userEmail);
       await expect(signUpPage.newUserHeaderLocator, 'user should be successfully created').toBeVisible();
 
-      await mainPage.youFeedTabLocator.click();
-      await mainPage.globalFeedTabLocator.click();
-      await mainPage.popularTagLocator.click();
-      await expect (mainPage.articleTagListLocator, `tag: ${tagName} should be present in the list`).toContainText(tagName);
+      await homePage.youFeedTabLocator.click();
+      await homePage.globalFeedTabLocator.click();
+      await homePage.popularTagLocator.click();
+      await expect (homePage.articleTagListLocator, `tag: ${tagName} should be present in the list`).toContainText(tagName);
     }
   );
 });

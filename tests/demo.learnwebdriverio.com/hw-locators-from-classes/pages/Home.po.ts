@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 
-export class MainPage {
+export class HomePage {
     // properties
     page: Page;
     youFeedTabLocator: Locator;
