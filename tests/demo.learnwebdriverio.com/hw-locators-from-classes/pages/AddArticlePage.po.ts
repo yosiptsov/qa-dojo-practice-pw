@@ -9,12 +9,16 @@ export class AddArticlePage {
   articleContentLocator: Locator;
   articleTagsLocator: Locator;
   publishArticleButtonLocator: Locator;
-  createdArticleLocator: Locator;
   // second version of locator
   createdArticleByNumberLocator: Locator;
 
-  // ? why does it also work without 'this.' Example: this.newArticleLocator = page.locator('a[href*="/editor"]');
-  constructor(page: Page, timestamp: string, elementNumber: number) {
+  getCreatedArticle = (timestamp: string) => this.page.locator(
+      `//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`);
+  getCreatedArticleByNumber = (timestamp: string, elementNumber: number) => this.page
+      .locator(`//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`)
+      .nth(elementNumber);
+
+  constructor(page: Page) {
     this.page = page;
     this.newArticleLocator = this.page.locator('a[href*="/editor"]');
     this.articleTitleLocator = this.page.locator('input[placeholder="Article Title"]');
@@ -22,20 +26,10 @@ export class AddArticlePage {
     this.articleContentLocator = this.page.locator('[placeholder="Write your article (in markdown)"]');
     this.articleTagsLocator = this.page.locator('[placeholder="Enter tags"]');
     this.publishArticleButtonLocator = this.page.locator('[data-qa-id="editor-publish"]');
-
-    // xpath with a parameter inside
-    this.createdArticleLocator = this.page.locator(
-      `//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`
-    );
-
-    // second version of locator
-    this.createdArticleByNumberLocator = this.page
-      .locator(`//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`)
-      .nth(elementNumber);
   }
 
   // class methods
-  async createNArticles(articleData, timestamp: string, numberOfArticles = 3) {
+  async createNArticles(articleData, timestamp: string, numberOfArticles = 1) {
     await this.newArticleLocator.click();
     for (let i = 0; i < numberOfArticles; i++) {
       await this.articleTitleLocator.fill(`${articleData.articles[i].articleTitle} #Article: ${timestamp}`);

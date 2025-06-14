@@ -28,21 +28,23 @@ test.describe('filter by tag filters articles in feed properly', () => {
 
       // preparing test data
       const timestamp = Date.now().toString();
-      const userName = `username${timestamp}`;
-      const userEmail = `${userName}@gmail1.com`;
-      const password = 'mypassword';
+      const neededNumberOfArticles = 2;
+      const user =  {
+        userName: `username${timestamp}`,
+        userEmail: `userName${timestamp}@gmail1.com`,
+        password: 'mypassword'
+      }
       const tagName = 'demo';
 
-      const signUpPage = new SignUpPage(page, userName);
-      const homePage = new HomePage(page, tagName);
+      const signUpPage = new SignUpPage(page);
+      const homePage = new HomePage(page);
   
       // register a new user
-      await signUpPage.createUser(userName, password, userEmail);
-      await expect(signUpPage.newUserHeaderLocator, 'user should be successfully created').toBeVisible();
+      await signUpPage.createUser(user);
 
       await homePage.youFeedTabLocator.click();
       await homePage.globalFeedTabLocator.click();
-      await homePage.popularTagLocator.click();
+      await homePage.getPopularTagByName(tagName).click();
       await expect (homePage.articleTagListLocator, `tag: ${tagName} should be present in the list`).toContainText(tagName);
     }
   );
