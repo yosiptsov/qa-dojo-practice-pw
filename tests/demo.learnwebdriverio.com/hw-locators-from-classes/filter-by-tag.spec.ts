@@ -12,6 +12,7 @@
 import { test, expect, Page } from '@playwright/test';
 import { SignUpPage } from './pages/SignUpPage.po';
 import { HomePage } from './pages/HomePage.po'
+import { ArticleDetailsPage } from './pages/ArticleDetailsPage.po'
 
 // baseURL overwrite the baseURL in playwright.config.ts
 const baseURL = 'https://demo.learnwebdriverio.com';
@@ -28,7 +29,6 @@ test.describe('filter by tag filters articles in feed properly', () => {
 
       // preparing test data
       const timestamp = Date.now().toString();
-      const neededNumberOfArticles = 2;
       const user =  {
         userName: `username${timestamp}`,
         userEmail: `userName${timestamp}@gmail1.com`,
@@ -38,6 +38,7 @@ test.describe('filter by tag filters articles in feed properly', () => {
 
       const signUpPage = new SignUpPage(page);
       const homePage = new HomePage(page);
+      const articleDetailsPage = new ArticleDetailsPage(page);
   
       // register a new user
       await signUpPage.createUser(user);
@@ -46,6 +47,10 @@ test.describe('filter by tag filters articles in feed properly', () => {
       await homePage.globalFeedTabLocator.click();
       await homePage.getPopularTagByName(tagName).click();
       await expect (homePage.articleTagListLocator, `tag: ${tagName} should be present in the list`).toContainText(tagName);
+
+      await homePage.clickArticleByNumber(0);
+      await expect(articleDetailsPage.getTagByName(tagName)).toBeVisible();
+      
     }
   );
 });

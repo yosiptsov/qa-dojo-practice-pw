@@ -15,8 +15,17 @@ export class HomePage {
         this.page = page;
         this.youFeedTabLocator = this.page.getByText('Your Feed');
         this.globalFeedTabLocator = this.page.getByText('Global Feed');
-        
         this.firstArticleInListLocator = this.page.locator('[data-qa-type=article-list] .article-preview:first-child');
         this.articleTagListLocator = this.page.locator('[data-qa-type=tag-list]').first();
     }
+
+    // methods
+    async clickArticleByTitle(title: string){
+        await this.page.locator('[data-qa-type=article-preview]', { hasText: title}).click();
+    }
+
+    async clickArticleByNumber(number = 0){
+        await this.page.locator('[data-qa-type=article-preview]').nth(number).click();
+    }
+
 }
