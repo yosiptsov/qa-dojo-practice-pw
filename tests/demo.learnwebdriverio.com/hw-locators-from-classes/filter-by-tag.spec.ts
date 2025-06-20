@@ -50,7 +50,6 @@ test.describe('filter by tag filters articles in feed properly', () => {
 
       await homePage.clickArticleByNumber(0);
       await expect(articleDetailsPage.getTagByName(tagName)).toBeVisible();
-      
     }
   );
 });
