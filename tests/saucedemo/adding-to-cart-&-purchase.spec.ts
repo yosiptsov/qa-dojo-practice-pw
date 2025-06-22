@@ -53,12 +53,12 @@ test.describe('Working with items list and cart. Positive cases:', () => {
         await signInPage.userSignin(user);
 
         // add an item by ItemName
-        await inventoryPage.itemComponent.addToCartByName(itemName);
+        await inventoryPage.inventoryItemComponent.addToCartByName(itemName);
 
         // go to the cart (first variant)    
         //await page.goto('/cart.html');
 
-        // go to the cart by clicking link in header
+        // go to the cart by clicking link in header (second variant)
         await inventoryPage.headerComponent.cartLinkClick();
         await cartPage.checkCurrentPageTitle('Your Cart');
 
