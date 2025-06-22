@@ -17,28 +17,22 @@ import { test, expect } from '@playwright/test'
 import { SignInPage } from '../../apps/saucedemoApp/pages/SignInPage';
 import { CartPage } from '../../apps/saucedemoApp/pages/CartPage';
 import { CheckoutPage } from '../../apps/saucedemoApp/pages/CheckoutPage';
-// components
-import { Header } from '../../apps/saucedemoApp/components/Header';
-import { InventoryItemContainer } from '../../apps/saucedemoApp/components/InverntoryItemContainer';
+
 // external libraries
 import { faker } from '@faker-js/faker';
-
-// ? you said baseUrl should be moved to a config file for each application. Is it ok to move it into the BasePage class?
-const baseURL = 'https://www.saucedemo.com/';
+import { InventoryPage } from '../../apps/saucedemoApp/pages/InventoryPage';
 
 // ? How to use type that was declared in the page object file?
-
-test.describe('Home work - working with Classes/PageObjects + OOP', () => {
+test.describe('Working with items list and cart. Positive cases:', () => {
     test.beforeEach(async ({ page }) => {
         // ? is it correct to create a class instance in each test function? beforeEach and test OOP-1;
         const signInPage = new SignInPage(page);
-        await signInPage.navigatePage(baseURL);
+        await page.goto('/');
     });
 
-    test('OOP-1', {tag: '@hw-oop'}, async ( {page} ) => {
+    test('OOP-1: Login, add an item to cart and purchase', {tag: '@hw-oop'}, async ( {page} ) => {
         const signInPage = new SignInPage(page);
-        const header = new Header(page);
-        const inventoryItemContainer = new InventoryItemContainer(page);
+        const inventoryPage = new InventoryPage(page);
         const cartPage = new CartPage(page);
         const checkoutPage = new CheckoutPage(page);
 
@@ -54,22 +48,19 @@ test.describe('Home work - working with Classes/PageObjects + OOP', () => {
         }
 
         const itemName = 'Sauce Labs Bike Light';
-        const prepareItemNameForLocator = (itemName: string) => itemName.replace(/ /g, '-').toLowerCase();
 
         // login an existing user
         await signInPage.userSignin(user);
-        // I would add this expect in the function signInPage.userSignin. But this expect uses class header. How to use it in class SignInPage, import class header? 
-        await expect(header.appLogoLocator).toBeVisible();
 
         // add an item by ItemName
-        await inventoryItemContainer.clickAddToCartByItemName(prepareItemNameForLocator(itemName));
+        await inventoryPage.itemComponent.addToCartByName(itemName);
 
-        // go to the cart (first variant)
-        await header.navigatePage(baseURL, 'cart.html');
+        // go to the cart (first variant)    
+        //await page.goto('/cart.html');
 
         // go to the cart by clicking link in header
-        await header.shoppingCartLinkLocatorClick();
-        await header.checkCurrentPageTitle('Your Cart');
+        await inventoryPage.headerComponent.cartLinkClick();
+        await cartPage.checkCurrentPageTitle('Your Cart');
 
         // check if added item is present in cart
         await expect(cartPage.getItemInCart(itemName)).toBeVisible();

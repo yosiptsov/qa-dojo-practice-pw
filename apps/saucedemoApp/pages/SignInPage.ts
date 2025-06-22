@@ -12,7 +12,7 @@ type User = {
     password: string
 }
 
-export class SignInPage extends BasePage{
+export class SignInPage extends BasePage {
     // attributes
     // page: Page; page is inherited from class BasePage
 
