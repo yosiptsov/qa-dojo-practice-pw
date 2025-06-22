@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
-import { BasePage } from './BasePage';
+import { BasePage } from '../pages/BasePage';
 
 export class InventoryItemContainer extends BasePage {
     // page is inherited from BasePage

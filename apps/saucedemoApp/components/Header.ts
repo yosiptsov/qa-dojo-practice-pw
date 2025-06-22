@@ -1,5 +1,5 @@
-import { Page, Locator } from '@playwright/test'
-import { BasePage } from './BasePage';
+import { Page, Locator } from '@playwright/test';
+import { BasePage } from '../../saucedemoApp/pages/BasePage';
 
 export class Header extends BasePage {
     //page: Page;

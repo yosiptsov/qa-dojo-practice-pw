@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices, test } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -36,19 +36,48 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'coffee-cart',
+      use: { ...devices['Desktop Chrome'],
+        baseURL: 'https://coffee-cart.app',
+       },
+       testDir: './tests/coffee-cart',
     },
 
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: 'demo.learnwebdriverio.com',
+      use: { ...devices['Desktop Chrome'],
+        baseURL: 'https://demo.learnwebdriverio.com',
+      },
+      testDir: './tests/demo.learnwebdriverio.com',
     },
 
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: 'demoqa.com',
+      use: { ...devices['Desktop Chrome'],
+        baseURL: 'https://demoqa.com',
+      },
+      testDir: './tests/demoqa.com',
     },
+
+    {
+      name: 'playwright.dev',
+      use: { ...devices['Desktop Chrome'],
+        baseURL: 'https://playwright.dev',
+      },
+      testDir: './tests/playwright.dev',
+    },
+
+    {
+      name: 'saucedemo',
+      use: { ...devices['Desktop Chrome'],
+        baseURL: 'https://saucedemo.com',
+      },
+      testDir: './tests/saucedemo',
+    },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {

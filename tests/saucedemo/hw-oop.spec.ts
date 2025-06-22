@@ -13,11 +13,14 @@
 */
 
 import { test, expect } from '@playwright/test'
-import { SignInPage } from '../saucedemoApp/SignInPage';
-import { Header } from '../saucedemoApp/Header';
-import { InventoryItemContainer } from '../saucedemoApp/InverntoryItemContainer';
-import { CartPage } from '../saucedemoApp/CartPage';
-import { CheckoutPage } from '../saucedemoApp/CheckoutPage';
+// pages
+import { SignInPage } from '../../apps/saucedemoApp/pages/SignInPage';
+import { CartPage } from '../../apps/saucedemoApp/pages/CartPage';
+import { CheckoutPage } from '../../apps/saucedemoApp/pages/CheckoutPage';
+// components
+import { Header } from '../../apps/saucedemoApp/components/Header';
+import { InventoryItemContainer } from '../../apps/saucedemoApp/components/InverntoryItemContainer';
+// external libraries
 import { faker } from '@faker-js/faker';
 
 // ? you said baseUrl should be moved to a config file for each application. Is it ok to move it into the BasePage class?
@@ -77,7 +80,6 @@ test.describe('Home work - working with Classes/PageObjects + OOP', () => {
 
         // fill in the checkout form with random data and click continue
         await checkoutPage.fillInCheckoutInformation(checkoutUserInformation);
-        console.log(checkoutUserInformation);
         await checkoutPage.continueButtonLocator.click();
 
         // check if it is still an item from the cart
