@@ -5,23 +5,18 @@
 4. Checks the added articles are shown in the list
 */
 
-import { test, expect, Page, Locator } from '@playwright/test';
-import { SignUpPage } from '../../../apps/conduitApp/pages/SignUpPage.po';
-import { AddArticlePage } from '../../../apps/conduitApp/pages/AddArticlePage.po';
+import { expect } from '@playwright/test';
+// import { SignUpPage } from '../../../apps/conduitApp/pages/SignUpPage.po';
+// import { AddArticlePage } from '../../../apps/conduitApp/pages/AddArticlePage.po';
+import { test } from './fixtures/baseFixture'
 import articleData from './test-data/article.json';
 
-// baseURL overwrite the baseURL in playwright.config.ts
-const baseURL = 'https://demo.learnwebdriverio.com';
-
 test.describe('register a user and add 3 articles', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(baseURL);
-  });
 
   test(
     'Demo-1: a new article should be successfully added',
     { tag: ['@demo', '@HW-classes', '@article'] },
-    async ({ page }) => {
+    async ({ page, signUpPage, addArticlePage}) => {
 
       // preparing test data
       const timestamp = Date.now().toString();
@@ -32,10 +27,6 @@ test.describe('register a user and add 3 articles', () => {
         password: 'mypassword'
       }
       
-      //create objects for needed classes
-      const signUpPage = new SignUpPage(page);
-      const addArticlePage = new AddArticlePage(page);
-
       // register a new user
       await signUpPage.createUser(user);
 

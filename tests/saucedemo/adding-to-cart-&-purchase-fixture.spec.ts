@@ -28,7 +28,7 @@ test.describe("Working with items list and cart. Positive cases:", () => {
   test(
     "OOP-1: Login, add an item to cart and purchase",
     { tag: "@hw-oop" },
-    async ({ page, signInPage, inventoryPage, cartPage, checkoutPage }) => { //list all needed pages that came from fixture
+    async ({ page, signInPage, inventoryPage, cartPage, checkoutPage }) => { //list all needed pages that came from fixture. 
 
       const user = {
         userName: "standard_user",
