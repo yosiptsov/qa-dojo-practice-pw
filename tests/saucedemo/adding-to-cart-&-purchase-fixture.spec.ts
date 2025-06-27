@@ -22,9 +22,8 @@ import { faker } from "@faker-js/faker";
 
 // ? How to use type that was declared in the page object file?
 test.describe("Working with items list and cart. Positive cases:", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-  });
+
+  // before each was moved to fixture
 
   test(
     "OOP-1: Login, add an item to cart and purchase",

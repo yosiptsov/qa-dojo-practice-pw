@@ -44,11 +44,11 @@ export default defineConfig({
     },
 
     {
-      name: 'demo.learnwebdriverio.com',
+      name: 'conduit',
       use: { ...devices['Desktop Chrome'],
         baseURL: 'https://demo.learnwebdriverio.com',
       },
-      testDir: './tests/demo.learnwebdriverio.com',
+      testDir: './tests/conduit',
     },
 
     {
