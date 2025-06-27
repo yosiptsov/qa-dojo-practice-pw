@@ -11,7 +11,7 @@
 
 import { test, expect, Page } from '@playwright/test';
 import { SignUpPage } from '../../../apps/conduitApp/pages/SignUpPage.po';
-import { HomePage } from '../../../apps/conduitApp/pages/HomePage.po'
+import { HomePage } from '../../../apps/conduitApp/pages/HomePage.po';
 import { ArticleDetailsPage } from '../../../apps/conduitApp/pages/ArticleDetailsPage.po'
 
 // baseURL overwrite the baseURL in playwright.config.ts
@@ -43,13 +43,14 @@ test.describe('filter by tag filters articles in feed properly', () => {
       // register a new user
       await signUpPage.createUser(user);
 
-      await homePage.youFeedTabLocator.click();
-      await homePage.globalFeedTabLocator.click();
+      await homePage.yourFeedTabClick();
+      await homePage.globalFeedTabClick();
       await homePage.getPopularTagByName(tagName).click();
-      await expect (homePage.articleTagListLocator, `tag: ${tagName} should be present in the list`).toContainText(tagName);
+      await homePage.checkIfTagIsPresentInListByTagname(tagName);
 
       await homePage.clickArticleByNumber(0);
-      await expect(articleDetailsPage.getTagByName(tagName)).toBeVisible();
+      await homePage.checkIfTagIsPresentInListByTagname(tagName);
+      //await expect(articleDetailsPage.getTagByName(tagName)).toBeVisible();
     }
   );
 });

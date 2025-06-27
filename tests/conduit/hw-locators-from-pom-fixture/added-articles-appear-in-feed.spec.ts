@@ -41,9 +41,8 @@ test.describe('register a user and add 3 articles', () => {
 
       // create several articles according to the parameter neededNumberOfArticles
       await addArticlePage.createNArticles(articleData, timestamp, neededNumberOfArticles);
-      await page.goto(baseURL);
+      await page.goto('/');
 
-      //expected results - version 1
       await expect(
         addArticlePage.getCreatedArticle(timestamp).first(),
         'new added articles should be present in the list'

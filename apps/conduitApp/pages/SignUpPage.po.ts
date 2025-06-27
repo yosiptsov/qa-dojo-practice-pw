@@ -1,4 +1,5 @@
 import { Locator, Page , expect } from '@playwright/test';
+import { BasePage } from './BasePage';
   
 type User = {
     userName: string,
@@ -6,20 +7,19 @@ type User = {
     password: string
 }
 
-export class SignUpPage {
+export class SignUpPage extends BasePage{
   // class properties
-  page: Page;
-  buttonSignUpLocator: Locator;
-  textboxUsernameLocator: Locator;
-  textboxPasswordLocator: Locator;
-  textboxEmailLocator: Locator;
+  private buttonSignUpLocator: Locator;
+  private textboxUsernameLocator: Locator;
+  private textboxPasswordLocator: Locator;
+  private textboxEmailLocator: Locator;
   //newUserHeaderLocator: Locator;
-  registerPage: string;
+  private registerPage: string;
   // get locator of the created user
   private getUserProfileLocatorByUserName = (userName: string) => this.page.locator(`a[href*="/@${userName}"]`);
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.buttonSignUpLocator = this.page.locator('.btn');
     this.textboxUsernameLocator = this.page.locator('[placeholder="Username"]');
     this.textboxPasswordLocator = this.page.locator('[placeholder="Password"]');
