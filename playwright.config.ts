@@ -32,7 +32,6 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
-
   /* Configure projects for major browsers */
   projects: [
     {
@@ -66,13 +65,19 @@ export default defineConfig({
       },
       testDir: './tests/playwright.dev',
     },
-
     {
       name: 'saucedemo',
       use: { ...devices['Desktop Chrome'],
         baseURL: 'https://saucedemo.com',
       },
       testDir: './tests/saucedemo',
+    },
+    {
+      name: 'zara-store',
+      use: { ...devices['Desktop Chrome'],
+        baseURL: 'https://www.zara.com/ua/',
+      },
+      testDir: './tests/zara-store',
     },
     // {
     //   name: 'webkit',

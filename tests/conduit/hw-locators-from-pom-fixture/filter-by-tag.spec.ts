@@ -11,16 +11,13 @@
 
 import { expect, Page } from '@playwright/test';
 import { test } from './fixtures/baseFixture'
-// import { SignUpPage } from '../../../apps/conduitApp/pages/SignUpPage.po';
-// import { HomePage } from '../../../apps/conduitApp/pages/HomePage.po';
-// import { ArticleDetailsPage } from '../../../apps/conduitApp/pages/ArticleDetailsPage.po'
 
 test.describe('filter by tag filters articles in feed properly', () => {
 
   test(
     'Demo-1: selecting a tag in section Popular tags should return articles that have this tag',
     { tag: ['@demo', '@HW-classes', '@article'] },
-    async ({ page, signUpPage, homePage, articleDetailsPage}) => {
+    async ({ signUpPage, homePage, articleDetailsPage}) => {
 
       // preparing test data
       const timestamp = Date.now().toString();
