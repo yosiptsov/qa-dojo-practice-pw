@@ -1,16 +1,17 @@
 import { Locator, Page } from '@playwright/test';
+import { BasePage } from './BasePage';
 
-export class AddArticlePage {
+export class AddArticlePage extends BasePage {
   // class properties
-  page: Page;
-  newArticleLocator: Locator;
-  articleTitleLocator: Locator;
-  articleDescriptionLocator: Locator;
-  articleContentLocator: Locator;
-  articleTagsLocator: Locator;
-  publishArticleButtonLocator: Locator;
+  //page is inherited from BasePage
+  private newArticleLocator: Locator;
+  private articleTitleLocator: Locator;
+  private articleDescriptionLocator: Locator;
+  private articleContentLocator: Locator;
+  private articleTagsLocator: Locator;
+  private publishArticleButtonLocator: Locator;
   // second version of locator
-  createdArticleByNumberLocator: Locator;
+  private createdArticleByNumberLocator: Locator;
 
   getCreatedArticle = (timestamp: string) => this.page.locator(
       `//*[@data-qa-type="preview-title"] [text()[contains(.,'${timestamp}')]]`);
@@ -19,7 +20,7 @@ export class AddArticlePage {
       .nth(elementNumber);
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.newArticleLocator = this.page.locator('a[href*="/editor"]');
     this.articleTitleLocator = this.page.locator('input[placeholder="Article Title"]');
     this.articleDescriptionLocator = this.page.locator('input[placeholder="What\'s this article about?"]');
