@@ -8,33 +8,28 @@
 import { expect } from '@playwright/test';
 import { test } from './fixtures/baseFixture'
 import articleData from './test-data/article.json';
-import fs from 'fs';
+// import fs from 'fs';
 
 const storageStatePath = '.auth/storage-state.json';
 
 test.describe('register a user and add 3 articles', () => {
+
+  // user create/login is moved to fixture for the next tests
+  // see storageState in baseFixture.ts. 
+  // it checks if file storage-state.json exists, than all tests will use this user state. 
+  // it creates and logins a new user if file doesn't exist.
 
   test(
     'Demo-1: a new article should be successfully added',
     { tag: ['@demo', '@HW-classes', '@article'] },
     async ({ page, signUpPage, addArticlePage, context}) => {
 
-      // preparing test data
       const timestamp = Date.now().toString();
       const neededNumberOfArticles = 2;
-      const user =  {
-        userName: `username${timestamp}`,
-        userEmail: `userName${timestamp}@gmail1.com`,
-        password: 'mypassword'
-      }
+
       
-      // register a new user
-      await signUpPage.createUser(user);
-
-      //save storage state
-      const state = await context.storageState({ path: storageStatePath });
-
       // create several articles according to the parameter neededNumberOfArticles
+      await page.goto('/');
       await addArticlePage.createNArticles(articleData, timestamp, neededNumberOfArticles);
       await page.goto('/');
 
@@ -51,7 +46,7 @@ test.describe('register a user and add 3 articles', () => {
 
   // here we say for the next test 'use this storageState', that was previously saved. So it should use user from the previous test
   //if (fs.existsSync(storageStatePath)){
-    test.use({ storageState: storageStatePath });
+  //test.use({ storageState: storageStatePath });
   //}
 
   test(

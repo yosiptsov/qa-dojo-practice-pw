@@ -1,4 +1,4 @@
-import { test as base, chromium, expect } from "@playwright/test";
+import { test as base } from "@playwright/test";
 import { AddArticlePage } from "../../../../apps/conduitApp/pages/AddArticlePage.po";
 import { ArticleDetailsPage } from "../../../../apps/conduitApp/pages/ArticleDetailsPage.po";
 import { HomePage } from "../../../../apps/conduitApp/pages/HomePage.po";
