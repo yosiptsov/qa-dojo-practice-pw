@@ -8,6 +8,9 @@
 import { expect } from '@playwright/test';
 import { test } from './fixtures/baseFixture'
 import articleData from './test-data/article.json';
+import fs from 'fs';
+
+const storageStatePath = '.auth/storage-state.json';
 
 test.describe('register a user and add 3 articles', () => {
 
@@ -25,15 +28,15 @@ test.describe('register a user and add 3 articles', () => {
         password: 'mypassword'
       }
       
-      // register a new user and login
+      // register a new user
       await signUpPage.createUser(user);
 
-      //store existing user login state 
-      const state = await context.storageState({ path: ".auth/storage-state.json" });
+      //save storage state
+      const state = await context.storageState({ path: storageStatePath });
 
       // create several articles according to the parameter neededNumberOfArticles
       await addArticlePage.createNArticles(articleData, timestamp, neededNumberOfArticles);
-      await page.goto('https://demo.learnwebdriverio.com');
+      await page.goto('/');
 
       await expect(
         addArticlePage.getCreatedArticle(timestamp).first(),
@@ -47,18 +50,17 @@ test.describe('register a user and add 3 articles', () => {
   );
 
   // here we say for the next test 'use this storageState', that was previously saved. So it should use user from the previous test
-  test.use({ storageState: ".auth/storage-state.json" });
+  //if (fs.existsSync(storageStatePath)){
+    test.use({ storageState: storageStatePath });
+  //}
 
-    test(
+  test(
     'Demo-2: selecting a tag in section Popular tags should return articles that have this tag',
     { tag: ['@demo', '@HW-classes', '@article'] },
-    async ({ signUpPage, homePage, page }) => {
+    async ({ homePage, page }) => {
         await page.goto('https://demo.learnwebdriverio.com');
 
       const tagName = 'demo';
-  
-      // it is unneeded now to create and login a user. User will be taken
-      // await signUpPage.createUser(user);
 
       await homePage.yourFeedTabClick();
       await homePage.globalFeedTabClick();
