@@ -33,4 +33,10 @@ export class SignInPage extends BasePage {
         await this.loginButtonLocator.click();
     }
 
+    async userSigninByUserName(user: string) {
+        await this.userNameFieldLocator.fill(user);
+        await this.passwordFieldLocator.fill(process.env.PASSWORD as string);
+        await this.loginButtonLocator.click();
+    }
+
 }

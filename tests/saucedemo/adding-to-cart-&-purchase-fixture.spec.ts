@@ -13,6 +13,7 @@
 */
 
 import { expect } from "@playwright/test";
+import { SAUCEDEMOUSERS } from '../../utils/sauceDemoUsers';
 import { test } from "./fixtures/baseFixture"; // fixture 'test' was expanded with another fixture in file baseFixture
 // pages
 // pages are not needed because they came from fixture
@@ -31,8 +32,8 @@ test.describe("Working with items list and cart. Positive cases:", () => {
     async ({ page, signInPage, inventoryPage, cartPage, checkoutPage }) => { //list all needed pages that came from fixture. 
 
       const user = {
-        userName: "standard_user",
-        password: "secret_sauce",
+        userName: SAUCEDEMOUSERS.standard_user,
+        password: process.env.PASSWORD as string,
       };
 
       const checkoutUserInformation = {

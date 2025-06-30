@@ -46,7 +46,6 @@ test.describe("register a user and add 3 articles", () => {
   );
 
   // here we say for the next test 'use this storageState', that was previously saved. So it should use user from the previous test
-
   // test.use({ storageState: storageStatePath });
 
   test(
