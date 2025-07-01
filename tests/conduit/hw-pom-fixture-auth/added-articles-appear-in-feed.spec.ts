@@ -12,16 +12,21 @@ import articleData from "./test-data/article.json";
 
 const storageStatePath = ".auth/storage-state.json";
 
-test.describe("register a user and add 3 articles", () => {
-  // user create/login is moved to fixture for the next tests
-  // see storageState in baseFixture.ts.
-  // it checks if file storage-state.json exists, than all tests will use this user state.
-  // it creates and logins a new user if file doesn't exist.
+test.describe(
+  "register a user and add 3 articles",
+  { tag: ["@Auth", "@storage-state"] },
+  () => {
+    // user create/login is moved to fixture for the next tests
+    // see storageState in baseFixture.ts.
+    // it checks if file storage-state.json exists, than all tests will use this user state.
+    // it creates and logins a new user if file doesn't exist.
 
-  test(
-    "Demo-1: a new article should be successfully added",
-    { tag: ["@demo", "@HW-classes", "@article"] },
-    async ({ page, signUpPage, addArticlePage, context }) => {
+    test("Demo-1: a new article should be successfully added", async ({
+      page,
+      signUpPage,
+      addArticlePage,
+      context,
+    }) => {
       const timestamp = Date.now().toString();
       const neededNumberOfArticles = 2;
 
@@ -42,16 +47,15 @@ test.describe("register a user and add 3 articles", () => {
         addArticlePage.getCreatedArticle(timestamp),
         "new added articles should be present in the list"
       ).toHaveCount(neededNumberOfArticles);
-    }
-  );
+    });
 
-  // here we say for the next test 'use this storageState', that was previously saved. So it should use user from the previous test
-  // test.use({ storageState: storageStatePath });
+    // here we say for the next test 'use this storageState', that was previously saved. So it should use user from the previous test
+    // test.use({ storageState: storageStatePath });
 
-  test(
-    "Demo-2: selecting a tag in section Popular tags should return articles that have this tag",
-    { tag: ["@demo", "@HW-classes", "@article"] },
-    async ({ homePage, page }) => {
+    test("Demo-2: selecting a tag in section Popular tags should return articles that have this tag", async ({
+      homePage,
+      page,
+    }) => {
       await page.goto("https://demo.learnwebdriverio.com");
 
       const tagName = "demo";
@@ -62,6 +66,6 @@ test.describe("register a user and add 3 articles", () => {
       await homePage.checkIfTagIsPresentInListByTagname(tagName);
       await homePage.clickArticleByNumber(0);
       await homePage.checkIfTagIsPresentInListByTagname(tagName);
-    }
-  );
-});
+    });
+  }
+);
