@@ -24,16 +24,82 @@ export class ArticleController {
 
     return response;
   }
+
   async getArticleByTitle(token: string, title: string) {
-    const response: APIResponse = await this.request.get('https://conduit-api.learnwebdriverio.com/api/articles/?limit=10', {
-      headers: {authorization: `Token ${token}`},
-    })
-        // отримати body респонзу
-        const responseJson: ArticlesResponse = await response.json();
-        const responseText = await response.text();
-        const responseBuffer = await response.body();
-        
-        const articleByTitle = responseJson.articles.filter((value) => value.title!.includes(title));
-        return articleByTitle[0];
+    const response: APIResponse = await this.request.get(
+      "https://conduit-api.learnwebdriverio.com/api/articles/?limit=10",
+      {
+        headers: { authorization: `Token ${token}` },
+      }
+    );
+    // get response body
+    const responseJson: ArticlesResponse = await response.json();
+    const articleByTitle = responseJson.articles.filter((value) =>
+      value.title!.includes(title)
+    );
+    return articleByTitle[0];
+  }
+
+  async deleteArticleByTitle(token: string, title: string) {
+    const response: APIResponse = await this.request.get(
+      "https://conduit-api.learnwebdriverio.com/api/articles/?limit=10",
+      {
+        headers: { authorization: `Token ${token}` },
+      }
+    );
+    // get response body
+    const responseJson: ArticlesResponse = await response.json();
+    const articleByTitle = responseJson.articles.filter((value) =>
+      value.title!.includes(title)
+    );
+
+    const deleteResponse: APIResponse = await this.request.delete(
+      `https://conduit-api.learnwebdriverio.com/api/articles/${articleByTitle[0].slug}`,{
+        headers: { authorization: `Token ${token}`},
+      },      
+    );
+    return deleteResponse.status();
+  }
+
+    async deleteArticleBySlug(token: string, slug: string) {
+    const response: APIResponse = await this.request.get(
+      "https://conduit-api.learnwebdriverio.com/api/articles/?limit=10",
+      {
+        headers: { authorization: `Token ${token}` },
+      }
+    );
+    // get response body
+    const responseJson: ArticlesResponse = await response.json();
+    const articleBySlug = responseJson.articles.filter((value) =>
+      value.slug!.includes(slug)
+    );
+
+    const deleteResponse: APIResponse = await this.request.delete(
+      `https://conduit-api.learnwebdriverio.com/api/articles/${articleBySlug[0].slug}`,{
+        headers: { authorization: `Token ${token}`},
+      },      
+    );
+    return deleteResponse.status();
+  }
+
+    async editAnArticleByTitle(token: string, title: string) {
+    const response: APIResponse = await this.request.get(
+      "https://conduit-api.learnwebdriverio.com/api/articles/?limit=10",
+      {
+        headers: { authorization: `Token ${token}` },
+      }
+    );
+    // get response body
+    const responseJson: ArticlesResponse = await response.json();
+    const articleByTitle = responseJson.articles.filter((value) =>
+      value.title!.includes(title)
+    );
+
+    const deleteResponse: APIResponse = await this.request.delete(
+      `https://conduit-api.learnwebdriverio.com/api/articles/${articleByTitle[0].slug}`,{
+        headers: { authorization: `Token ${token}`},
+      },      
+    );
+    return deleteResponse.status();
   }
 }
