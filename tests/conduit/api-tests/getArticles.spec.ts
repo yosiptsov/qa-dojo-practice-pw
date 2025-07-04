@@ -3,13 +3,16 @@ import fs from "fs";
 import { UserController } from "../../../apps/conduitApp/api/users/UserController";
 import { UserResponse } from "../../../apps/conduitApp/api/users/UserTypes";
 import { ArticleController } from "../../../apps/conduitApp/api/articles/ArticleController";
+import { faker } from "@faker-js/faker";
 import {
   Article,
   ArticlesResponse,
 } from "../../../apps/conduitApp/api/articles/ArticleTypes";
 
 test.describe("Conduit API Tests", { tag: "@api-tests" }, () => {
-  test("API-01: get article - should return articles list", async ({ request }) => {
+  test("API-01: get article - should return articles list", async ({
+    request,
+  }) => {
     // Arrange Act Assert (AAA)
 
     // Arrange
@@ -23,17 +26,17 @@ test.describe("Conduit API Tests", { tag: "@api-tests" }, () => {
 
     // Assert
 
-    // отримати body респонзу
+    // get response body
     const responseJson: ArticlesResponse = await response.json();
     const responseText = await response.text();
     const responseBuffer = await response.body();
 
-    // вбудовані методи масивів
+    // filter articles that contain needed tag
     const dojoArticles = responseJson.articles.filter((value) =>
       value.tagList!.includes("dojo")
     );
 
-    // проста перевірка
+    // verify response is not empty
     expect(dojoArticles.length).toBeGreaterThan(1);
   });
 
@@ -55,7 +58,9 @@ test.describe("Conduit API Tests", { tag: "@api-tests" }, () => {
     expect(token).toBeTruthy();
   });
 
-  test("API-03: login as existed user - should get token", async ({ request }) => {
+  test("API-03: login as existed user - should get token", async ({
+    request,
+  }) => {
     const userController = new UserController(request);
 
     const requestBody = {
@@ -72,7 +77,9 @@ test.describe("Conduit API Tests", { tag: "@api-tests" }, () => {
     expect(token).toBeTruthy();
   });
 
-  test("API-04: login as existed user - should be logged", async ({ request }) => {
+  test("API-04: login as existed user - should be logged", async ({
+    request,
+  }) => {
     // Arrange
 
     // Act
@@ -118,5 +125,44 @@ test.describe("Conduit API Tests", { tag: "@api-tests" }, () => {
 
     // Assert
     await expect(articleResponse).toBeOK();
+  });
+
+  test("added article should be present in /api/articles/ response", async ({
+    request,
+  }) => {
+    // create objects from a needed classes
+    const userController = new UserController(request);
+    const articleController = new ArticleController(request);
+
+    // login by a user
+    const loginResponse = await userController.login({
+      email: "yoapi1@fakeemail.com",
+      password: "1234",
+    });
+    // save the logged user token
+    const token = await userController.getTokenFromResponse(loginResponse);
+
+    const newArticleBody: Article = {
+      title: `YO test article about ${faker.airline.airline()}`,
+      description: `YO test article about ${faker.lorem.lines(1)}`,
+      body: `YO test article about ${faker.lorem.paragraph()}`,
+      tagList: ["YO-Article"],
+    };
+
+    await test.step("Create a new article", async () => {
+      const createdArticle = await articleController.createArticle(
+        newArticleBody,
+        token!
+      );
+      await expect(createdArticle).toBeOK();
+    });
+
+    await test.step('Get 10 last articles and make sure added article is present in the list', async () => {
+      const article = await articleController.getArticleByTitle(
+        token!,
+        newArticleBody.title!
+      );
+      expect(article.title).toBe(newArticleBody.title);
+    });
   });
 });
