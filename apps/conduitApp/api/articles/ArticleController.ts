@@ -24,4 +24,8 @@ export class ArticleController {
 
     return response;
   }
+  async getArticleByTitle(title: string, token: string) {
+    
+  }
 }
+
