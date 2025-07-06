@@ -1,8 +1,8 @@
 import { APIResponse, expect, test } from "@playwright/test";
 import fs from "fs";
-import { UserController } from "../../../apps/conduitApp/api/users/UserController";
+import { UserController } from '../../../apps/conduitApp/api/users/UserController';
 import { UserResponse } from "../../../apps/conduitApp/api/users/UserTypes";
-import { ArticleController } from "../../../apps/conduitApp/api/articles/ArticleController";
+import { ArticleController } from '../../../apps/conduitApp/api/articles/ArticleController';
 import { faker } from "@faker-js/faker";
 import {
   Article,
@@ -189,6 +189,21 @@ test.describe(
           );
         expect(deleteArticleResponse).toEqual(204);
       });
+    });
+
+    test('test articlesCount', async ({request}) => {
+      const articleController = new ArticleController(request);
+      const userController = new UserController(request);
+
+      const loginResponse = await userController.login({
+        email: 'yoapi1@fakeemail.com',
+        password: '1234'
+      });
+      const token = await userController.getTokenFromResponse(loginResponse);
+      //const articlesCount = await articleController.getResponse(token);
+      const response = await articleController.getArticlesByTitleCorrectly(token!, 'Understanding User Authentication 3');
+      //console.log(articlesCount.articlesCount);
+      console.log(response);
     });
   }
 );

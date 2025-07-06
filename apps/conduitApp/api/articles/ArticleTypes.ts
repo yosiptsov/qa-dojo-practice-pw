@@ -19,6 +19,7 @@ export type Article = {
 
 export type ArticlesResponse = {
   articles: Article[];
+  articlesCount: number;
 };
 
 export type ArticlesCreation = {
