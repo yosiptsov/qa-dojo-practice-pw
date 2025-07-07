@@ -49,7 +49,6 @@ export class ArticleController {
       const responseJson: ArticlesResponse = await this.getResponse(token, 10, i * 10);
       const filteredArticles = responseJson.articles.filter((value) => value.title!.includes(title));
       articlesByTitle = articlesByTitle.concat(filteredArticles);
-      console.log(title);
     }
     return articlesByTitle;
   }
@@ -94,7 +93,28 @@ export class ArticleController {
         `https://conduit-api.learnwebdriverio.com/api/articles/${slug}`,
         { headers: { authorization: `Token ${token}` } }
       );
-      console.log(deleteResponse);
     }
+  }
+
+  async deleteAllArticlesByTitleInParallelUsingPromises(token: string, title: string) {
+    let articlesByTitleArray: String[] = new Array();
+
+    const filteredArticles = await this.getAllArticlesByTitle(token!, title);
+    articlesByTitleArray.push(...filteredArticles.map((article) => article.slug!));
+
+    const deletePromises = articlesByTitleArray.map((slug) =>
+      this.request
+        .delete(`https://conduit-api.learnwebdriverio.com/api/articles/${slug}`, {
+          headers: { authorization: `Token ${token}` },
+        })
+        .then((res) => {
+          console.log(`Deleted ${slug}`);
+          return res;
+        })
+        .catch((err) => {
+          console.error(`Failed to delete: ${slug}`, err);
+        })
+    );
+    await Promise.all(deletePromises);
   }
 }

@@ -147,7 +147,6 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
 
     const articleSlugs = await articleController.getAllArticlesByTitle(token!, newArticleBody.title!);
-    console.log(articleSlugs);
 
     await test.step("Delete created article", async () => {
       const deleteArticleResponse = await articleController.deleteArticleByTitle(token!, newArticleBody.title!);
@@ -156,7 +155,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
   });
 
-  test("Several identical articles should be created and then deleted", async ({request}) => {
+  test("API-07: Several identical articles should be created and then deleted", async ({request}) => {
     // create objects from a needed classes
     const userController = new UserController(request);
     const articleController = new ArticleController(request);
@@ -182,6 +181,35 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
 
     await test.step('Delete all added articles', async () => {
       await articleController.deleteAllArticlesByTitle(token!, newArticleBody.title!);
+    });
+  });
+
+    test("API-08: Several identical articles should be created and then deleted in PARALLEL using PROMISES", async ({request}) => {
+    // create objects from a needed classes
+    const userController = new UserController(request);
+    const articleController = new ArticleController(request);
+
+    // login by a user
+    const loginResponse = await userController.login({email: 'yoapi1@fakeemail.com', password: '1234'});
+    // save the logged user token
+    const token = await userController.getTokenFromResponse(loginResponse);
+
+    const newArticleBody: Article = {
+      title: `YO test article about ${faker.lorem.lines(1)}`,
+      description: `YO test article about ${faker.lorem.lines(1)}`,
+      body: `YO test article about ${faker.lorem.paragraph()}`,
+      tagList: ["YOArticle"],
+    };
+
+    await test.step("Create 3 identical new articles", async () => {
+      for(let i=0; i<3; i++){
+      const createdArticle = await articleController.createArticle(newArticleBody, token!);
+      await expect(createdArticle, `${i} article should be created`).toBeOK();
+      }
+    });
+
+    await test.step('Delete all added articles', async () => {
+      await articleController.deleteAllArticlesByTitleInParallelUsingPromises(token!, newArticleBody.title!);
     });
   });
 });
