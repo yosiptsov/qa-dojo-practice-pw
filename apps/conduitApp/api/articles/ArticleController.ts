@@ -45,7 +45,7 @@ export class ArticleController {
     let articlesByTitle = new Array();
 
     const articlesCount = (await this.getResponse(token, 1)).articlesCount;
-    for (let i = 1; i <= Math.trunc(articlesCount / 10) + 1; i++) {
+    for (let i = 0; i <= Math.trunc(articlesCount / 10) + 1; i++) {
       const responseJson: ArticlesResponse = await this.getResponse(token, 10, i * 10);
       const articleByTitle = responseJson.articles.filter((value) => value.title!.includes(title));
       articlesByTitle = articlesByTitle.concat(articleByTitle);
@@ -80,5 +80,20 @@ export class ArticleController {
     );
     return deleteResponse.status();
   }
+
+  async deleteAllArticlesByTitle(token: string, title: string) {
+    // get response body
+    const responseJson: ArticlesResponse = await this.getResponse(token, 10);
+    const articleByTitle = responseJson.articles.filter((value) => value.title!.includes(title));
+
+    const deleteResponse: APIResponse = await this.request.delete(
+      `https://conduit-api.learnwebdriverio.com/api/articles/${articleByTitle[0].slug}`,
+      {
+        headers: { authorization: `Token ${token}` },
+      }
+    );
+    return deleteResponse.status();
+  }
+  
 
 }

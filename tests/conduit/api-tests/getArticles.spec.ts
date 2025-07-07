@@ -138,29 +138,17 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
 
     await test.step("Get 10 last articles and make sure added article is present in the list", async () => {
-      const article = await articleController.getArticleByTitle(token!, newArticleBody.title!);
-      expect(article.tagList, `article should contain ${newArticleBody.tagList} in the tag list`).toEqual(
+      const article = await articleController.getAllArticlesByTitle(token!, newArticleBody.title!);
+      expect(article[0].tagList, `article should contain ${newArticleBody.tagList} in the tag list`).toEqual(
         newArticleBody.tagList
       );
-      expect(article.title, `article title should be equal to ${newArticleBody.title}`).toBe(newArticleBody.title);
+      expect(article[0].title, `article title should be equal to ${newArticleBody.title}`).toBe(newArticleBody.title);
+      expect(article.length, 'response should contain at least one article').toBeGreaterThan(0);
     });
 
     await test.step("Delete created article", async () => {
       const deleteArticleResponse = await articleController.deleteArticleByTitle(token!, newArticleBody.title!);
       expect(deleteArticleResponse).toEqual(204);
     });
-  });
-
-  test("test articlesCount", async ({ request }) => {
-    const articleController = new ArticleController(request);
-    const userController = new UserController(request);
-
-    const loginResponse = await userController.login({
-      email: "yoapi1@fakeemail.com",
-      password: "1234",
-    });
-    const token = await userController.getTokenFromResponse(loginResponse);
-    const response = await articleController.getAllArticlesByTitle(token!, "Demo Article");
-    console.log(response);
   });
 });
