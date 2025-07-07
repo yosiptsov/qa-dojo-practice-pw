@@ -42,13 +42,14 @@ export class ArticleController {
   }
 
   async getAllArticlesByTitle(token: string, title: string) {
-    let articlesByTitle = new Array();
+    let articlesByTitle: Article[] = new Array();
 
     const articlesCount = (await this.getResponse(token, 1)).articlesCount;
     for (let i = 0; i <= Math.trunc(articlesCount / 10) + 1; i++) {
       const responseJson: ArticlesResponse = await this.getResponse(token, 10, i * 10);
-      const articleByTitle = responseJson.articles.filter((value) => value.title!.includes(title));
-      articlesByTitle = articlesByTitle.concat(articleByTitle);
+      const filteredArticles = responseJson.articles.filter((value) => value.title!.includes(title));
+      articlesByTitle = articlesByTitle.concat(filteredArticles);
+      console.log(title);
     }
     return articlesByTitle;
   }
@@ -64,7 +65,7 @@ export class ArticleController {
         headers: { authorization: `Token ${token}` },
       }
     );
-    return deleteResponse.status();
+    return deleteResponse;
   }
 
   async deleteArticleBySlug(token: string, slug: string) {
@@ -78,22 +79,22 @@ export class ArticleController {
         headers: { authorization: `Token ${token}` },
       }
     );
-    return deleteResponse.status();
+    return deleteResponse;
   }
 
   async deleteAllArticlesByTitle(token: string, title: string) {
-    // get response body
-    const responseJson: ArticlesResponse = await this.getResponse(token, 10);
-    const articleByTitle = responseJson.articles.filter((value) => value.title!.includes(title));
+    let articlesByTitleArray: String[] = new Array();
 
-    const deleteResponse: APIResponse = await this.request.delete(
-      `https://conduit-api.learnwebdriverio.com/api/articles/${articleByTitle[0].slug}`,
-      {
-        headers: { authorization: `Token ${token}` },
-      }
-    );
-    return deleteResponse.status();
+    const filteredArticles = await this.getAllArticlesByTitle(token!, title);
+    articlesByTitleArray.push(...filteredArticles.map((article) => article.slug!));
+
+    // delete all find articles
+    for (const slug of articlesByTitleArray) {
+      const deleteResponse: APIResponse = await this.request.delete(
+        `https://conduit-api.learnwebdriverio.com/api/articles/${slug}`,
+        { headers: { authorization: `Token ${token}` } }
+      );
+      console.log(deleteResponse);
+    }
   }
-  
-
 }
