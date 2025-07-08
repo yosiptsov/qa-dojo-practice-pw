@@ -42,15 +42,20 @@ export default defineConfig({
        },
        testDir: './tests/coffee-cart',
     },
-
     {
-      name: 'conduit',
+      name: 'conduit-e2e',
       use: { ...devices['Desktop Chrome'],
         baseURL: 'https://demo.learnwebdriverio.com',
       },
-      testDir: './tests/conduit',
+      testDir: './tests/conduit/e2e',
+      testMatch: "**/*.@(spec|test).?(c|m)[jt]s?(x)",
     },
-
+    {
+      name: 'conduit-api',
+      use: { },
+      testDir: './tests/conduit/api',
+      testMatch: "**/*.@(api).?(c|m)[jt]s?(x)",
+    },
     {
       name: 'demoqa.com',
       use: { ...devices['Desktop Chrome'],
