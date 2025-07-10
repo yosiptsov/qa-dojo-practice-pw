@@ -9,6 +9,7 @@ on:
         options:
           - api
           - e2e
+          
 jobs:
   test:
     timeout-minutes: 60
