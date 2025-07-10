@@ -1,6 +1,14 @@
 name: Saucedemo
 on:
   workflow_dispatch:
+    inputs:
+      test_type:
+        type: choice
+        required: true
+        description: "Choose what type of tests you want to run"
+        options:
+          - api
+          - e2e
 jobs:
   test:
     timeout-minutes: 60
