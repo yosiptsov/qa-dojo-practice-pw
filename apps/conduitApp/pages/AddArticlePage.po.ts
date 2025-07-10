@@ -4,6 +4,7 @@ import { BasePage } from './BasePage';
 export class AddArticlePage extends BasePage {
   // class properties
   //page is inherited from BasePage
+  //this.page = page;
   private newArticleLocator: Locator;
   private articleTitleLocator: Locator;
   private articleDescriptionLocator: Locator;
