@@ -2,18 +2,25 @@ name: Conduit
 on:
   workflow_dispatch:
     inputs:
+      workers_count:
+        description: "Provide number of workers"
+        type: number
+        default: 3
       test_type:
         type: choice
         required: true
         description: "Choose what type of tests you want to run"
         options:
-          - api
-          - e2e
-          
+          - conduit-api
+          - conduit-e2e
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      WORKERS_COUNT: ${{inputs.workers_count}}
+      SAUCEDEMO_PASSWORD: ${{vars.SAUCEDEMO_PASSWORD}}
+
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -23,8 +30,8 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
+    - name: Run Playwright tests - Project conduit
+      run: npx playwright test --project=${{inputs.test_type.options}}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
