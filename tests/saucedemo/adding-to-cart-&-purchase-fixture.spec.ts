@@ -33,7 +33,7 @@ test.describe("Working with items list and cart. Positive cases:", () => {
 
       const user = {
         userName: SAUCEDEMOUSERS.standard_user,
-        password: process.env.PASSWORD as string,
+        password: process.env.SAUCEDEMO_PASSWORD as string,
       };
 
       const checkoutUserInformation = {
