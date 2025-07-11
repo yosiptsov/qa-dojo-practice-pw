@@ -13,6 +13,14 @@ on:
         options:
           - conduit-api
           - conduit-e2e
+      environments:
+        type: choice
+        required: true
+        description: "Choose environment"
+        options:
+          - testing
+          - staging
+          - production
 jobs:
   test:
     timeout-minutes: 60
