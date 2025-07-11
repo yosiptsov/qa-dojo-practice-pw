@@ -37,9 +37,9 @@ test.describe("Conduit API Tests - classroom tests - create and get articles", {
     const userController = new UserController(request);
 
     const requestBody = {
-      email: "yoapi1@fakeemail.com",
+      email: "yoapi10@fakeemail.com",
       password: "1234",
-      username: "yoapi1",
+      username: "yoapi10",
     };
 
     // Act
@@ -49,6 +49,7 @@ test.describe("Conduit API Tests - classroom tests - create and get articles", {
     const responseJson: UserResponse = await response.json();
     const token = responseJson.user.token;
     expect(token).toBeTruthy();
+    console.log(response.status);
   });
 
   test("API-03: login as existed user - should get token", async ({ request }) => {
