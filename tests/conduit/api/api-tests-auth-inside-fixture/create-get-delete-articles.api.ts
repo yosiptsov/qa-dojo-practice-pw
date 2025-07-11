@@ -1,27 +1,15 @@
-import { APIResponse, expect } from "@playwright/test";
-import fs from "fs";
-import { UserController } from "../../../../apps/conduitApp/api/users/UserController";
-import { UserResponse } from "../../../../apps/conduitApp/api/users/UserTypes";
-import { ArticleController } from "../../../../apps/conduitApp/api/articles/ArticleController";
+import { expect } from "@playwright/test";
 import { faker } from "@faker-js/faker";
-import { Article, ArticlesResponse } from "../../../../apps/conduitApp/api/articles/ArticleTypes";
+import { Article } from "../../../../apps/conduitApp/api/articles/ArticleTypes";
+import { defaultUserData } from "../fixtures/userData";
 
 // rewriting test from fixture
 import { test } from "../fixtures/api-fixture";
 
-test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () => {
-  test("API-06: added article should be present in /api/articles/ response", async ({ request }) => {
-    // create objects from a needed classes
-    const userController = new UserController(request);
-    const articleController = new ArticleController(request);
+test.use({ userToLoginEmail: defaultUserData.email });
 
-    // login by a user
-    const loginResponse = await userController.login({
-      email: "yoapi1@fakeemail.com",
-      password: "1234",
-    });
-    // save the logged user token
-    const token = await userController.getTokenFromResponse(loginResponse);
+test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () => {
+  test("API-06: added article should be present in /api/articles/ response", async ({ articleController }) => {
 
     const newArticleBody: Article = {
       title: `YO test article about ${faker.lorem.lines(1)}`,
@@ -53,15 +41,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
   });
 
-  test("API-07: Several identical articles should be created and then deleted", async ({request}) => {
-    // create objects from a needed classes
-    const userController = new UserController(request);
-    const articleController = new ArticleController(request);
-
-    // login by a user
-    const loginResponse = await userController.login({email: 'yoapi1@fakeemail.com', password: '1234'});
-    // save the logged user token
-    const token = await userController.getTokenFromResponse(loginResponse);
+  test("API-07: Several identical articles should be created and then deleted", async ({ articleController }) => {
 
     const newArticleBody: Article = {
       title: `YO test article about ${faker.lorem.lines(1)}`,
@@ -82,15 +62,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
   });
 
-    test("API-08: Several identical articles should be created and then deleted in PARALLEL using PROMISES", async ({request}) => {
-    // create objects from a needed classes
-    const userController = new UserController(request);
-    const articleController = new ArticleController(request);
-
-    // login by a user
-    const loginResponse = await userController.login({email: 'yoapi1@fakeemail.com', password: '1234'});
-    // save the logged user token
-    const token = await userController.getTokenFromResponse(loginResponse);
+    test("API-08: Several identical articles should be created and then deleted in PARALLEL using PROMISES", async ({ articleController }) => {
 
     const newArticleBody: Article = {
       title: `YO test article about ${faker.lorem.lines(1)}`,

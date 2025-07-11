@@ -15,9 +15,6 @@ export const test = base.extend<ApiControllers>({
   userToLoginEmail: undefined,
 
   request: async ({ request, userToLoginEmail }, use) => {
-    // move user login from tests to the fixture.
-  // it should login as a user and save the user state if this state has not been created yet
-  // OR use existing state if it already exists for the current user
     if (userToLoginEmail) {
       if (fs.existsSync(`.auth/${userToLoginEmail}.json`)) {
         const token = fs.readFileSync(`.auth/${userToLoginEmail}.json`, {
@@ -75,7 +72,6 @@ export const test = base.extend<ApiControllers>({
     //   }
     // }
   },
-
   userController: async ({ request }, use) => {
     const userController = new UserController(request);
 
