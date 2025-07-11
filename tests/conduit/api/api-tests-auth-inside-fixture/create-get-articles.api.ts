@@ -1,25 +1,18 @@
-import { APIResponse, expect, test } from "@playwright/test";
+import { APIResponse, expect } from "@playwright/test";
 import fs from "fs";
 import { UserController } from "../../../../apps/conduitApp/api/users/UserController";
 import { UserResponse } from "../../../../apps/conduitApp/api/users/UserTypes";
 import { ArticleController } from "../../../../apps/conduitApp/api/articles/ArticleController";
 import { Article, ArticlesResponse } from "../../../../apps/conduitApp/api/articles/ArticleTypes";
 
+// rewriting test from fixture
+import { test } from "../fixtures/api-fixture";
+
 test.describe("Conduit API Tests - classroom tests - create and get articles", { tag: "@api-tests" }, () => {
   test("API-01: get article - should return articles list", async ({ request }) => {
-    // Arrange Act Assert (AAA)
-
-    // Arrange
-
-    // Act
-
-    // http реквести
     const response: APIResponse = await request.get(
       "https://conduit-api.learnwebdriverio.com/api/articles?offset=0&limit=10"
     );
-
-    // Assert
-
     // get response body
     const responseJson: ArticlesResponse = await response.json();
     const responseText = await response.text();
@@ -32,8 +25,8 @@ test.describe("Conduit API Tests - classroom tests - create and get articles", {
     expect(yoArticles.length).toBeGreaterThan(0);
   });
 
-  test("API-02: create user - should be created", async ({ request }) => {
-    const userController = new UserController(request);
+  test("API-02: create user - should be created", async ({ userController }) => {
+
 
     const requestBody = {
       email: "yoapi10@fakeemail.com",
@@ -51,8 +44,10 @@ test.describe("Conduit API Tests - classroom tests - create and get articles", {
     console.log(response.status);
   });
 
-  test("API-03: login as existed user - should get token", async ({ request }) => {
-    const userController = new UserController(request);
+  test("API-03: login as existed user - should get token", async ({ userController }) => {
+    
+    // this comes from fixture now
+    //const userController = new UserController(request);
 
     const requestBody = {
       email: "yoapi1@fakeemail.com",
