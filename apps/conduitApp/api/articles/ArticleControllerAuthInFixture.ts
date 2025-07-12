@@ -14,7 +14,7 @@ export class ArticleController {
       article: articleData,
     };
 
-    const response = await this.request.post("https://conduit-api.learnwebdriverio.com/api/articles", {
+    const response = await this.request.post("/api/articles", {
       data: requestBody,
       failOnStatusCode: true,
     });
@@ -31,7 +31,7 @@ export class ArticleController {
   // returns entire response with list of articles, with possibility to set limit and offset
   private async getResponse(limit?: number, offset?: number) {
     const response: APIResponse = await this.request.get(
-      `https://conduit-api.learnwebdriverio.com/api/articles/?limit=${limit}&offset=${offset}`,
+      `/api/articles/?limit=${limit}&offset=${offset}`,
     );
     // get response body
     const responseJson: ArticlesResponse = await response.json();
@@ -62,7 +62,7 @@ export class ArticleController {
     const articleByTitle = responseJson.articles.filter((value) => value.title!.includes(title));
 
     const deleteResponse: APIResponse = await this.request.delete(
-      `https://conduit-api.learnwebdriverio.com/api/articles/${articleByTitle[0].slug}`,
+      `/api/articles/${articleByTitle[0].slug}`,
     );
     return deleteResponse;
   }
@@ -73,7 +73,7 @@ export class ArticleController {
     const articleBySlug = responseJson.articles.filter((value) => value.slug!.includes(slug));
 
     const deleteResponse: APIResponse = await this.request.delete(
-      `https://conduit-api.learnwebdriverio.com/api/articles/${articleBySlug[0].slug}`,
+      `/api/articles/${articleBySlug[0].slug}`,
     );
     return deleteResponse;
   }
@@ -87,7 +87,7 @@ export class ArticleController {
     // delete all find articles
     for (const slug of articlesByTitleArray) {
       const deleteResponse: APIResponse = await this.request.delete(
-        `https://conduit-api.learnwebdriverio.com/api/articles/${slug}`,
+        `/api/articles/${slug}`,
       );
     }
   }
@@ -101,7 +101,7 @@ export class ArticleController {
 
     const deletePromises = articlesByTitleArray.map((slug) =>
       this.request
-        .delete(`https://conduit-api.learnwebdriverio.com/api/articles/${slug}`, {
+        .delete(`/api/articles/${slug}`, {
         })
         .then((res) => {
           console.log(`Deleted ${slug}`);

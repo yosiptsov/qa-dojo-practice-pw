@@ -54,23 +54,24 @@ export const test = base.extend<ApiControllers>({
     } else await use(request);
 
     // cleanup
-    // if (global.registeredArticles.length > 0) {
-    //   const token = fs.readFileSync(`.auth/${userToLoginEmail}.json`, {
-    //     encoding: "utf8",
-    //   });
+    // delete all created articles, saved in global variable. see playwright config
+    if (global.registeredArticles.length > 0) {
+      const token = fs.readFileSync(`.auth/${userToLoginEmail}.json`, {
+        encoding: "utf8",
+      });
 
-    //   const context = await newRequest.newContext({
-    //     extraHTTPHeaders: {
-    //       authorization: `Token ${token}`,
-    //     },
-    //   });
+      const context = await newRequest.newContext({
+        extraHTTPHeaders: {
+          authorization: `Token ${token}`,
+        },
+      });
 
-    //   const articleController = new ArticleController(context);
+      const articleController = new ArticleController(context);
 
-    //   for (const slug of global.registeredArticles) {
-    //     await articleController.delete(slug);
-    //   }
-    // }
+      for (const slug of global.registeredArticles) {
+        await articleController.delete(slug);
+      }
+    }
   },
   userController: async ({ request }, use) => {
     const userController = new UserController(request);

@@ -6,7 +6,6 @@ import { defaultUserData } from "../fixtures/userData";
 // rewriting test from fixture
 import { test } from "../fixtures/api-fixture";
 
-
 test.use({ userToLoginEmail: defaultUserData.email });
 
 test.describe("#1 Conduit API Tests - homework tests", { tag: "@api-tests" }, () => {
@@ -20,7 +19,7 @@ test.describe("#1 Conduit API Tests - homework tests", { tag: "@api-tests" }, ()
     };
 
     await test.step("Create a new article", async () => {
-      const createdArticle = await articleController.createArticle(newArticleBody, {registerToCleanup: true});
+      const createdArticle = await articleController.createArticle(newArticleBody, {registerToCleanup: false});
       await expect(createdArticle).toBeOK();
     });
 
@@ -59,10 +58,10 @@ test.describe("#1 Conduit API Tests - homework tests", { tag: "@api-tests" }, ()
       await expect(createdArticle, `${i} article should be created`).toBeOK();
       }
     });
-
-    await test.step('Delete all added articles', async () => {
-      await articleController.deleteAllArticlesByTitle(newArticleBody.title!);
-    });
+    //! articles were created with option {registerToCleanup: true}. so they will be deleted by the fixture cleanup
+    // await test.step('Delete all added articles', async () => {
+    //   await articleController.deleteAllArticlesByTitle(newArticleBody.title!);
+    // });
   });
 
     test("API-08: Several identical articles should be created and then deleted in PARALLEL using PROMISES", async ({ articleController }) => {
@@ -87,4 +86,3 @@ test.describe("#1 Conduit API Tests - homework tests", { tag: "@api-tests" }, ()
     });
   });
 });
-

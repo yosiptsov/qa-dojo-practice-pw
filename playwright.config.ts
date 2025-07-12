@@ -55,7 +55,7 @@ export default defineConfig({
     },
     {
       name: 'conduit-api',
-      use: { baseURL: "https://conduit-api.learnwebdriverio.com" },
+      use: { baseURL: "https://conduit-api.learnwebdriverio.com" }, 
       testDir: './tests/conduit/api',
       testMatch: "**/*.@(api).?(c|m)[jt]s?(x)",
     },
