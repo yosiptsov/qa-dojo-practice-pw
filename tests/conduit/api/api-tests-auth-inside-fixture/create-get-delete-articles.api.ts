@@ -6,9 +6,12 @@ import { defaultUserData } from "../fixtures/userData";
 // rewriting test from fixture
 import { test } from "../fixtures/api-fixture";
 
-test.use({ userToLoginEmail: defaultUserData.email });
+
 
 test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () => {
+  
+  test.use({ userToLoginEmail: defaultUserData.email });
+  console.log(defaultUserData.email);
   test("API-06: added article should be present in /api/articles/ response", async ({ articleController }) => {
 
     const newArticleBody: Article = {
@@ -19,12 +22,12 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     };
 
     await test.step("Create a new article", async () => {
-      const createdArticle = await articleController.createArticle(newArticleBody, token!);
+      const createdArticle = await articleController.createArticle(newArticleBody);
       await expect(createdArticle).toBeOK();
     });
 
     await test.step("Get 10 last articles and make sure added article is present in the list", async () => {
-      const article = await articleController.getAllArticlesByTitle(token!, newArticleBody.title!);
+      const article = await articleController.getAllArticlesByTitle(newArticleBody.title!);
       expect(article[0].tagList, `article should contain ${newArticleBody.tagList} in the tag list`).toEqual(
         newArticleBody.tagList
       );
@@ -32,10 +35,10 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
       expect(article.length, 'response should contain at least one article').toBeGreaterThan(0);
     });
 
-    const articleSlugs = await articleController.getAllArticlesByTitle(token!, newArticleBody.title!);
+    const articleSlugs = await articleController.getAllArticlesByTitle(newArticleBody.title!);
 
     await test.step("Delete created article", async () => {
-      const deleteArticleResponse = await articleController.deleteArticleByTitle(token!, newArticleBody.title!);
+      const deleteArticleResponse = await articleController.deleteArticleByTitle(newArticleBody.title!);
       expect(deleteArticleResponse.status()).toEqual(204);
       expect(deleteArticleResponse.statusText()).toEqual('No Content');
     });
@@ -52,13 +55,13 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
 
     await test.step("Create 3 identical new articles", async () => {
       for(let i=0; i<3; i++){
-      const createdArticle = await articleController.createArticle(newArticleBody, token!);
+      const createdArticle = await articleController.createArticle(newArticleBody);
       await expect(createdArticle, `${i} article should be created`).toBeOK();
       }
     });
 
     await test.step('Delete all added articles', async () => {
-      await articleController.deleteAllArticlesByTitle(token!, newArticleBody.title!);
+      await articleController.deleteAllArticlesByTitle(newArticleBody.title!);
     });
   });
 
@@ -73,13 +76,13 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
 
     await test.step("Create 3 identical new articles", async () => {
       for(let i=0; i<3; i++){
-      const createdArticle = await articleController.createArticle(newArticleBody, token!);
+      const createdArticle = await articleController.createArticle(newArticleBody);
       await expect(createdArticle, `${i} article should be created`).toBeOK();
       }
     });
 
     await test.step('Delete all added articles', async () => {
-      await articleController.deleteAllArticlesByTitleInParallelUsingPromises(token!, newArticleBody.title!);
+      await articleController.deleteAllArticlesByTitleInParallelUsingPromises(newArticleBody.title!);
     });
   });
 });

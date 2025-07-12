@@ -14,7 +14,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
 
     // login by a user
     const loginResponse = await userController.login({
-      email: "yoapi1@fakeemail.com",
+      email: "yoapi101@fakeemail.com",
       password: "1234",
     });
     // save the logged user token
@@ -33,7 +33,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
 
     await test.step("Get 10 last articles and make sure added article is present in the list", async () => {
-      const article = await articleController.getAllArticlesByTitle(token!, newArticleBody.title!);
+      const article = await articleController.getAllArticlesByTitle(newArticleBody.title!, token!);
       expect(article[0].tagList, `article should contain ${newArticleBody.tagList} in the tag list`).toEqual(
         newArticleBody.tagList
       );
@@ -41,10 +41,10 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
       expect(article.length, 'response should contain at least one article').toBeGreaterThan(0);
     });
 
-    const articleSlugs = await articleController.getAllArticlesByTitle(token!, newArticleBody.title!);
+    const articleSlugs = await articleController.getAllArticlesByTitle(newArticleBody.title!, token!);
 
     await test.step("Delete created article", async () => {
-      const deleteArticleResponse = await articleController.deleteArticleByTitle(token!, newArticleBody.title!);
+      const deleteArticleResponse = await articleController.deleteArticleByTitle(newArticleBody.title!, token!);
       expect(deleteArticleResponse.status()).toEqual(204);
       expect(deleteArticleResponse.statusText()).toEqual('No Content');
     });
@@ -56,7 +56,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     const articleController = new ArticleController(request);
 
     // login by a user
-    const loginResponse = await userController.login({email: 'yoapi1@fakeemail.com', password: '1234'});
+    const loginResponse = await userController.login({email: 'yoapi101@fakeemail.com', password: '1234'});
     // save the logged user token
     const token = await userController.getTokenFromResponse(loginResponse);
 
@@ -75,7 +75,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
 
     await test.step('Delete all added articles', async () => {
-      await articleController.deleteAllArticlesByTitle(token!, newArticleBody.title!);
+      await articleController.deleteAllArticlesByTitle(newArticleBody.title!, token!);
     });
   });
 
@@ -85,7 +85,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     const articleController = new ArticleController(request);
 
     // login by a user
-    const loginResponse = await userController.login({email: 'yoapi1@fakeemail.com', password: '1234'});
+    const loginResponse = await userController.login({email: 'yoapi101@fakeemail.com', password: '1234'});
     // save the logged user token
     const token = await userController.getTokenFromResponse(loginResponse);
 
@@ -104,7 +104,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
 
     await test.step('Delete all added articles', async () => {
-      await articleController.deleteAllArticlesByTitleInParallelUsingPromises(token!, newArticleBody.title!);
+      await articleController.deleteAllArticlesByTitleInParallelUsingPromises(newArticleBody.title!, token!);
     });
   });
 });

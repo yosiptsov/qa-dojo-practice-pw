@@ -1,4 +1,4 @@
-import { ArticleController } from "../../../../apps/conduitApp/api/articles/ArticleController";
+import { ArticleController } from "../../../../apps/conduitApp/api/articles/ArticleControllerAuthInFixture";
 import { UserController } from "../../../../apps/conduitApp/api/users/UserController";
 import { test as base, expect } from "@playwright/test";
 import { UserResponse } from "../../../../apps/conduitApp/api/users/UserTypes";
