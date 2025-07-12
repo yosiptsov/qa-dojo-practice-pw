@@ -8,6 +8,9 @@ import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+// global variable for tests Conduit, deleting created articles.
+global.registeredArticles = [];
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */

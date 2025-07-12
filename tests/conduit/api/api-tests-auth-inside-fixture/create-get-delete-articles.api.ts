@@ -7,10 +7,9 @@ import { defaultUserData } from "../fixtures/userData";
 import { test } from "../fixtures/api-fixture";
 
 
+test.use({ userToLoginEmail: defaultUserData.email });
 
-test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () => {
-  
-  test.use({ userToLoginEmail: defaultUserData.email });
+test.describe("#1 Conduit API Tests - homework tests", { tag: "@api-tests" }, () => {
   test("API-06: added article should be present in /api/articles/ response", async ({ articleController }) => {
 
     const newArticleBody: Article = {
@@ -21,7 +20,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     };
 
     await test.step("Create a new article", async () => {
-      const createdArticle = await articleController.createArticle(newArticleBody);
+      const createdArticle = await articleController.createArticle(newArticleBody, {registerToCleanup: true});
       await expect(createdArticle).toBeOK();
     });
 
@@ -43,6 +42,8 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
   });
 
+  // {registerToCleanup: false} options of the method delete in ArticleControlledAuthInFixture. 
+  // If TRUE, added articles will be deleted automatically in fixture cleanup. If FALSE, articles will be deleted in this method
   test("API-07: Several identical articles should be created and then deleted", async ({ articleController }) => {
 
     const newArticleBody: Article = {
@@ -54,7 +55,7 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
 
     await test.step("Create 3 identical new articles", async () => {
       for(let i=0; i<3; i++){
-      const createdArticle = await articleController.createArticle(newArticleBody);
+      const createdArticle = await articleController.createArticle(newArticleBody, {registerToCleanup: true});
       await expect(createdArticle, `${i} article should be created`).toBeOK();
       }
     });
@@ -72,10 +73,11 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
       body: `YO test article about ${faker.lorem.paragraph()}`,
       tagList: ["YOArticle"],
     };
-
+    // {registerToCleanup: false} options of the method delete in ArticleControlledAuthInFixture. 
+    // If TRUE, added articles will be deleted automatically in fixture cleanup. If FALSE, articles will be deleted in this method
     await test.step("Create 3 identical new articles", async () => {
       for(let i=0; i<3; i++){
-      const createdArticle = await articleController.createArticle(newArticleBody);
+      const createdArticle = await articleController.createArticle(newArticleBody, {registerToCleanup: false});
       await expect(createdArticle, `${i} article should be created`).toBeOK();
       }
     });
@@ -85,3 +87,4 @@ test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () =>
     });
   });
 });
+

@@ -6,6 +6,7 @@ export class ArticleController {
   constructor(request: APIRequestContext) {
     this.request = request;
   }
+  
   async createArticle(articleData: Article, token?: string) {
     const requestBody: ArticlesCreation = {
       article: articleData,

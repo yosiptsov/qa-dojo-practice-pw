@@ -8,14 +8,22 @@ export class ArticleController {
   }
 //I made token is not required for ALL methods because tests with fixtures use authentication inside the fixture, 
 //but still exist tests without fixtures which use auth inside the test
-  async createArticle(articleData: Article) {
+  async createArticle(articleData: Article, options: {registerToCleanup: boolean}) {
+    
     const requestBody: ArticlesCreation = {
       article: articleData,
     };
 
     const response = await this.request.post("https://conduit-api.learnwebdriverio.com/api/articles", {
       data: requestBody,
+      failOnStatusCode: true,
     });
+
+    if (options.registerToCleanup === true) {
+      const json = await response.json();
+      const slug = json.article.slug;
+      global.registeredArticles.push(slug);
+    }
 
     return response;
   }
@@ -104,5 +112,14 @@ export class ArticleController {
         })
     );
     await Promise.all(deletePromises);
+  }
+
+  // delete for cleanup in fixture
+  async delete(slug: string) {
+    const response = await this.request.delete(`/api/articles/${slug}`, {
+      failOnStatusCode: true,
+    });
+
+    return response;
   }
 }
