@@ -6,8 +6,6 @@ export class ArticleController {
   constructor(request: APIRequestContext) {
     this.request = request;
   }
-//I made token is not required for ALL methods because tests with fixtures use authentication inside the fixture, 
-//but still exist tests without fixtures which use auth inside the test
   async createArticle(articleData: Article, token?: string) {
     const requestBody: ArticlesCreation = {
       article: articleData,
@@ -36,13 +34,13 @@ export class ArticleController {
     return responseJson;
   }
 
-  async getArticleByTitle(title: string, token?: string) {
+  async getArticleByTitle(title: string, token: string) {
     const responseJson: ArticlesResponse = await this.getResponse(10, 0, token);
     const articleByTitle = responseJson.articles.filter((value) => value.title!.includes(title));
     return articleByTitle[0];
   }
 
-  async getAllArticlesByTitle(title: string, token?: string) {
+  async getAllArticlesByTitle(title: string, token: string) {
     let articlesByTitle: Article[] = new Array();
 
     const articlesCount = (await this.getResponse(1, 0, token)).articlesCount;
@@ -54,7 +52,7 @@ export class ArticleController {
     return articlesByTitle;
   }
 
-  async deleteArticleByTitle(title: string, token?: string) {
+  async deleteArticleByTitle(title: string, token: string) {
     // get response body
     const responseJson: ArticlesResponse = await this.getResponse(10, 0, token);
     const articleByTitle = responseJson.articles.filter((value) => value.title!.includes(title));
@@ -68,7 +66,7 @@ export class ArticleController {
     return deleteResponse;
   }
 
-  async deleteArticleBySlug(slug: string, token?: string) {
+  async deleteArticleBySlug(slug: string, token: string) {
     // get response body
     const responseJson: ArticlesResponse = await this.getResponse(10, 0, token);
     const articleBySlug = responseJson.articles.filter((value) => value.slug!.includes(slug));
@@ -82,7 +80,7 @@ export class ArticleController {
     return deleteResponse;
   }
 
-  async deleteAllArticlesByTitle(title: string, token?: string) {
+  async deleteAllArticlesByTitle(title: string, token: string) {
     let articlesByTitleArray: String[] = new Array();
 
     const filteredArticles = await this.getAllArticlesByTitle(title, token!);
@@ -97,7 +95,7 @@ export class ArticleController {
     }
   }
 
-  async deleteAllArticlesByTitleInParallelUsingPromises(title: string, token?: string) {
+  async deleteAllArticlesByTitleInParallelUsingPromises(title: string, token: string) {
     let articlesByTitleArray: String[] = new Array();
 
     const filteredArticles = await this.getAllArticlesByTitle(token!, title);

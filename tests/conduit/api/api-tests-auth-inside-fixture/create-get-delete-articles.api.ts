@@ -11,7 +11,6 @@ import { test } from "../fixtures/api-fixture";
 test.describe("Conduit API Tests - homework tests", { tag: "@api-tests" }, () => {
   
   test.use({ userToLoginEmail: defaultUserData.email });
-  console.log(defaultUserData.email);
   test("API-06: added article should be present in /api/articles/ response", async ({ articleController }) => {
 
     const newArticleBody: Article = {
