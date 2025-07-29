@@ -4,3 +4,5 @@ function reverseString(str: string = "Hello World!") {
 }
 
 console.log(reverseString());
+
+

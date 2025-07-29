@@ -88,6 +88,11 @@ export default defineConfig({
       },
       testDir: './tests/zara-store',
     },
+        {
+      name: 'JS-Training-Unit-Tests',
+      use: {},
+      testDir: './tests/misc-tasks-n-unit-tests',
+    },
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
