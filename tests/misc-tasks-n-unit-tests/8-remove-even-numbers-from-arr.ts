@@ -1,7 +1,6 @@
 // TASK: remove all even numbers from an array
 function removeEvenNumbersFromArray(arr: Array<number>) {
     const result = arr.filter(elem => elem % 2 !== 0).sort();
-
     return result;
 }
 
