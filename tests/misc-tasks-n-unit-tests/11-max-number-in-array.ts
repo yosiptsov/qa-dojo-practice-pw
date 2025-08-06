@@ -5,3 +5,6 @@ export function maxNumberInArray(array: Array<number>): number{
 }
 
 console.log(maxNumberInArray([100, 2, 333, 0.23, 222, 1000]));
+
+
+
